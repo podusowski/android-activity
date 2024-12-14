@@ -13,6 +13,7 @@ fn build_glue_for_game_activity() {
     cc::Build::new()
         .cpp(true)
         .include("game-activity-csrc")
+        .include("game-activity-csrc/common")
         .file("game-activity-csrc/game-activity/GameActivity.cpp")
         .file("game-activity-csrc/game-activity/GameActivityEvents.cpp")
         .extra_warnings(false)
