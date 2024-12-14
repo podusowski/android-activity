@@ -16,6 +16,7 @@ fn build_glue_for_game_activity() {
         .include("game-activity-csrc/common")
         .file("game-activity-csrc/game-activity/GameActivity.cpp")
         .file("game-activity-csrc/game-activity/GameActivityEvents.cpp")
+        .file("game-activity-csrc/common/system_utils.cpp")
         .extra_warnings(false)
         .cpp_link_stdlib("c++_static")
         .compile("libgame_activity.a");
