@@ -11,7 +11,7 @@ use std::sync::{Arc, Mutex, RwLock};
 use std::time::Duration;
 
 use libc::c_void;
-use log::{error, trace};
+use log::{error, trace, warn};
 
 use jni_sys::*;
 
@@ -386,10 +386,16 @@ impl AndroidAppInner {
                                     ffi::NativeAppGlueAppCmd_APP_CMD_PAUSE => MainEvent::Pause,
                                     ffi::NativeAppGlueAppCmd_APP_CMD_STOP => MainEvent::Stop,
                                     ffi::NativeAppGlueAppCmd_APP_CMD_DESTROY => MainEvent::Destroy,
-                                    ffi::NativeAppGlueAppCmd_APP_CMD_WINDOW_INSETS_CHANGED => {
+                                    ffi::NativeAppGlueAppCmd_APP_CMD_WINDOW_INSETS_CHANGED
+                                    | ffi::NativeAppGlueAppCmd_APP_CMD_SOFTWARE_KB_VIS_CHANGED => {
                                         MainEvent::InsetsChanged {}
                                     }
-                                    _ => unreachable!(),
+                                    ffi::NativeAppGlueAppCmd_APP_CMD_TOUCH_EVENT => {
+                                        MainEvent::InputAvailable
+                                    }
+                                    _ => {
+                                        panic!("Unknown android_app command: {cmd_i}");
+                                    }
                                 };
 
                                 trace!("Read ID_MAIN command {cmd_i} = {cmd:?}");
